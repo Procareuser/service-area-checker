@@ -1,0 +1,69 @@
+import React, { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { motion } from "framer-motion";
+
+const serviceAreas = [
+  "Aldine",
+  "Brookshire",
+  "Coirroe",
+  "Cypress",
+  "Fort Bend County",
+  "Hunters Creek Village",
+  "Jersey Village",
+  "Katy",
+  "Magnolia",
+  "Memorial",
+  "Pasadena",
+  "Pearland",
+  "Piney Point Village",
+  "Spring"
+];
+
+export default function ServiceAreaChecker() {
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState(null);
+
+  const checkServiceArea = (value) => {
+    const found = serviceAreas.some((area) =>
+      area.toLowerCase() === value.trim().toLowerCase()
+    );
+    setResult(found ? "Yes, we serve this area." : "Sorry, this area is not in our service zone.");
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-100">
+      <img
+        src="/logo.jpeg"
+        alt="ProCare Appliance Repair LLC Logo"
+        className="w-48 mb-6"
+      />
+      <Card className="w-full max-w-md shadow-lg">
+        <CardContent className="p-6">
+          <h1 className="text-2xl font-bold mb-4 text-center">Service Area Checker</h1>
+          <Input
+            placeholder="Enter city or area name..."
+            value={input}
+            onChange={(e) => {
+              setInput(e.target.value);
+              setResult(null);
+            }}
+            onKeyDown={(e) => e.key === "Enter" && checkServiceArea(input)}
+            className="mb-4"
+          />
+          {result && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className={`text-lg font-semibold text-center ${
+                result.startsWith("Yes") ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {result}
+            </motion.div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
